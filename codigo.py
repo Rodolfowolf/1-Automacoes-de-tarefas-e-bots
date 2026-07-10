@@ -1,11 +1,101 @@
 # bibliotecas = pacotes de codigos prontos que a gente pode usar
 # Passo a passo do seu programa com python e pyautogui
 
+from ast import While
+
 import pyautogui  
-import time
 import os
 print(os.getcwd) 
 
+import time
+import pandas
+import pyautogui
+
+# Configura uma pequena pausa de 0.5 segundos entre os comandos do pyautogui
+# Isso evita que o Python atropele o sistema operacional
+pyautogui.PAUSE = 0.7
+
+print("Iniciando monitoramento... Pressione Ctrl + C para encerrar.")
+
+while True:
+    tabela = pandas.read_csv("CadastroID.csv") 
+    print("\n--- Nova Leitura da Tabela ---")
+    
+    houve_alteracao = False
+    
+    for index, linha in tabela.iterrows():
+        codigo = linha["ID"]
+        status = linha["STATUS"]
+        
+        if status != "ok":
+        #    print(f"Código {codigo}: Status está OK!")
+        #else:
+            #print(f"Código {codigo}: Status NÃO está ok. Iniciando automação...")
+            
+            # 1. Dá um clique duplo na coordenada para focar/selecionar o campo
+            pyautogui.doubleClick(x=1140, y=220)
+            
+            # 2. Seleciona todo o texto existente no campo (Ctrl + A)
+            pyautogui.hotkey('command', 'a')
+
+            # 3. Escreve o ID correspondente da planilha
+            # Convertemos para string (texto) para garantir que o pyautogui consiga digitar
+            pyautogui.write(str(codigo))
+            
+            # 4. Pressiona Enter para confirmar a ação na sua tela/sistema
+            pyautogui.press("enter")
+            
+            pyautogui.click(x=595, y=925)
+            pyautogui.click(x=595, y=925)
+            # 5. Atualiza o status para "ok" na memória
+            tabela.at[index, "STATUS"] = "ok"
+            houve_alteracao = True
+            print(f"-> Automação executada para o ID {codigo}.")
+            
+    if houve_alteracao:
+        tabela.to_csv("CadastroID.csv", index=False)
+        print("Planilha salva com os status atualizados!")
+            
+    time.sleep(5)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
+# Passo 0: abrir o navegador e entrar no site da empresa
 pyautogui.PAUSE = 0.5
 link = "https://dlp.hashtagtreinamentos.com/python/intensivao/login"
 
@@ -40,13 +130,10 @@ time.sleep(4)
 
 # Passo 2: fazer login 
 # Passo 3: abrir a base de dados
-import pandas
-tabela = pandas.read_csv("produtos.csv") 
-print(tabela)  
 
 for linha in tabela.index:
 # Passo 4: cadastrar 1 produto
-    pyautogui.click(x=535, y=256 ) 
+    pyautogui.click(x=1140, y=220 ) 
     codigo = str(tabela.loc[linha, "codigo"])
     pyautogui.write(codigo)
     pyautogui.press("tab")
@@ -76,5 +163,5 @@ for linha in tabela.index:
         pyautogui.write(obs)
     pyautogui.press("enter") 
     pyautogui.scroll(5000) # rolar a tela pra cima
- 
+ """
 # Passo 5: repetir o passo 4 ate acaber a lista de produtos.  
