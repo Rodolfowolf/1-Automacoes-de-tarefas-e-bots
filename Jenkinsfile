@@ -8,8 +8,8 @@ pipeline {
     }
 
     environment {
-        REPO_URL = 'https://github.com/Rodolfowolf/1-Automacoes-de-tarefas-e-bots.git'
-        APP_NAME = '1-Automacoes-de-tarefas-e-bots'
+        REPO_URL = 'https://github.com/Rodolfowolf/AutomacaoShopee.git'
+        APP_NAME = 'AutomacaoShopee'
     }
 
     stages {
